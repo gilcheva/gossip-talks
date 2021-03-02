@@ -3,8 +3,8 @@ package bg.codeacademy.spring.gossiptalks.service;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +24,7 @@ public class UserService implements UserDetailsService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public List<User> listUsers(Pageable pageable, String name, boolean follow) {
+  public Page<User> listUsers(Pageable pageable, String name, boolean follow) {
     if (follow){
       return  userRepository.findByNameAndFollowTrue(name);
     }else{
