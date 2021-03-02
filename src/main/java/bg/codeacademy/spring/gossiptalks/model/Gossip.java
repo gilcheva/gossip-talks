@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Gossip {
+
   @Id
   @Pattern(regexp = "[A-Z0-9]+")
   private String id;
@@ -72,7 +73,7 @@ public class Gossip {
     Gossip gossip = (Gossip) o;
     return id == gossip.id &&
         username.equals(gossip.username) &&
-        text.equals(gossip.text)&&
+        text.equals(gossip.text) &&
         dateTime.equals(gossip.dateTime);
   }
 
