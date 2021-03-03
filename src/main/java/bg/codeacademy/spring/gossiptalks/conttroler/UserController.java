@@ -27,19 +27,19 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping
-  public List<UserResponse> getUsers(@RequestParam(required = false) String name,
-      @RequestParam(required = false) boolean following) {
-
-    Page<User> users = userService.listUsers(PageRequest.of(0, 20), name, following);
-
-    return users.stream().map(user -> new UserResponse()
-        .setId(user.getId())
-        .setUsername(user.getUsername())
-        .setName(user.getName())
-        .setFollowing(user.isFollowing())
-//TODO    ).sorted(u->u.getGossips)
-    ) .collect(Collectors.toList());
-
-  }
+//  @GetMapping
+//  public List<UserResponse> getUsers(@RequestParam(required = false) String name,
+//      @RequestParam(required = false) boolean following) {
+//
+//    Page<User> users = userService.listUsers(PageRequest.of(0, 20), name, following);
+//
+//    return users.stream().map(user -> new UserResponse()
+//        .setId(user.getId())
+//        .setUsername(user.getUsername())
+//        .setName(user.getName())
+//        .setFollowing(user.isFollowing())
+////TODO    ).sorted(u->u.getGossips)
+//    ) .collect(Collectors.toList());
+//
+//  }
 }

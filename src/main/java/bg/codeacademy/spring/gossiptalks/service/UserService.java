@@ -3,6 +3,7 @@ package bg.codeacademy.spring.gossiptalks.service;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
