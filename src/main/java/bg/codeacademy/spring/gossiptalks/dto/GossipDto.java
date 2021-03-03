@@ -1,10 +1,22 @@
 package bg.codeacademy.spring.gossiptalks.dto;
 
-public class GossipDto {
+import com.sun.istack.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
-  private String text;
-  private String username;
+public class GossipDto {
+  // A 32-radix representation of the gossip ID.pattern: '[A-Z0-9]+'
+  @NotNull
   private String id;
+
+//max 255 - A common-mark formatted text. For safety reasons HTML entities MUST be forbidden.)
+  private String text;
+
+  @NotBlank
+  @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
+  private String username;
+
+  //format: date-time
   private String dateTime;
 
   public String getText() {
