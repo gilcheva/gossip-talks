@@ -26,24 +26,31 @@ public class User implements UserDetails {
   @GeneratedValue
   private long id;
   private String name;
+
   @NotNull
   @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   @Column(unique = true)
   private String email;
+
   @NotNull
   @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
   @Column(unique = true)
   private String username;
+
   @NotNull
   @Size(max = 1024)
   private String password;
+
   @NotNull
   private OffsetDateTime registrationTime;
+
   private OffsetDateTime lastLoginTime;
   private boolean following;
   private boolean admin;
-  @ManyToMany
-  private ArrayList<User> users;
+
+//  @ManyToMany
+//  private ArrayList<User> users;
+
   @ElementCollection
   private List<String> roles = new ArrayList(Arrays.asList("admin", "users"));
 
@@ -120,14 +127,14 @@ public class User implements UserDetails {
     return this;
   }
 
-  public ArrayList<User> getUsers() {
-    return users;
-  }
-
-  public User setUsers(ArrayList<User> users) {
-    this.users = users;
-    return this;
-  }
+//  public ArrayList<User> getUsers() {
+//    return users;
+//  }
+//
+//  public User setUsers(ArrayList<User> users) {
+//    this.users = users;
+//    return this;
+//  }
 
   public boolean isAdmin() {
     return admin;
