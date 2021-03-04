@@ -6,12 +6,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -28,7 +31,8 @@ public class User implements UserDetails {
   private String name;
 
   @NotNull
-  @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+  //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+  @Email
   @Column(unique = true)
   private String email;
 
@@ -43,16 +47,12 @@ public class User implements UserDetails {
 
   @NotNull
   private OffsetDateTime registrationTime;
-
   private OffsetDateTime lastLoginTime;
+  
+  @ManyToMany
+  private Set<User> followers; //юзери които go следваt
   private boolean following;
   private boolean admin;
-
-//  @ManyToMany
-//  private ArrayList<User> users;
-
-  @ElementCollection
-  private List<String> roles = new ArrayList(Arrays.asList("admin", "users"));
 
 
   public long getId() {
@@ -136,21 +136,13 @@ public class User implements UserDetails {
 //    return this;
 //  }
 
-  public boolean isAdmin() {
-    return admin;
+
+ public Set<User> getFollowers() {
+    return followers;
   }
 
-  public User setAdmin(boolean admin) {
-    this.admin = admin;
-    return this;
-  }
-
-  public List<String> getRoles() {
-    return roles;
-  }
-
-  public User setRoles(List<String> roles) {
-    this.roles = roles;
+  public User setFollowers(Set<User> followers) {
+    this.followers = followers;
     return this;
   }
 
@@ -176,12 +168,10 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if (admin) {
-      return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
-          new SimpleGrantedAuthority("ROLE_ADMIN"));
-    } else {
-      return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+
+    return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
+        new SimpleGrantedAuthority("ROLE_ADMIN"));
+
   }
 
   @Override

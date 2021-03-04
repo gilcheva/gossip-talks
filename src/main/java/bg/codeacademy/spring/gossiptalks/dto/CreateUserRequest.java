@@ -1,13 +1,14 @@
 package bg.codeacademy.spring.gossiptalks.dto;
 
 import bg.codeacademy.spring.gossiptalks.validation.ValidPassword;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 //extends CommonPasswordRequest - може ли да се екстендва тук
 public class CreateUserRequest {
 
-  @NotNull
+
   @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
   private String username;
 
@@ -22,9 +23,12 @@ public class CreateUserRequest {
   private String name;
 
   @NotNull
-  @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+  @Email
+  //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   private String email;
  // private boolean following; - optional, should be ignored
+
+
 
 
   public String getPasswordConfirmation() {
@@ -63,12 +67,21 @@ public class CreateUserRequest {
     return this;
   }
 
+  public boolean isFollowing() {
+    return following;
+  }
+
   public String getEmail() {
     return email;
   }
 
   public CreateUserRequest setEmail(String email) {
     this.email = email;
+    return this;
+  }
+
+  public CreateUserRequest setFollowing(boolean following) {
+    this.following = following;
     return this;
   }
 
@@ -80,5 +93,6 @@ public class CreateUserRequest {
 //    this.following = following;
 //    return this;
 //  }
+
 }
 
