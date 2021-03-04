@@ -1,5 +1,6 @@
 package bg.codeacademy.spring.gossiptalks.conttroler;
 
+
 import bg.codeacademy.spring.gossiptalks.dto.ChangePasswordRequest;
 import bg.codeacademy.spring.gossiptalks.dto.CreateUserRequest;
 import bg.codeacademy.spring.gossiptalks.model.User;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +25,7 @@ public class UserController {
   public UserController(UserService userService) {
     this.userService = userService;
   }
+
 
 
   //Valio-----UserResponse changeCurrentUserPassword(@ApiParam(value = "", required=true) @RequestPart(value="password", required=true)  String password,@ApiParam(value = "", required=true) @RequestPart(value="passwordConfirmation", required=true)  String passwordConfirmation,@ApiParam(value = "", required=true) @RequestPart(value="oldPassword", required=true)  String oldPassword);*/
@@ -50,4 +51,21 @@ public class UserController {
       @RequestBody ChangePasswordRequest request) {
     return userService.changePassword(userID, request.getOldPassword(), request.getNewPassword());
   }
+
+//  @GetMapping
+//  public List<UserResponse> getUsers(@RequestParam(required = false) String name,
+//      @RequestParam(required = false) boolean following) {
+//
+//    Page<User> users = userService.listUsers(PageRequest.of(0, 20), name, following);
+//
+//    return users.stream().map(user -> new UserResponse()
+//        .setId(user.getId())
+//        .setUsername(user.getUsername())
+//        .setName(user.getName())
+//        .setFollowing(user.isFollowing())
+////TODO    ).sorted(u->u.getGossips)
+//    ) .collect(Collectors.toList());
+//
+//  }
+
 }

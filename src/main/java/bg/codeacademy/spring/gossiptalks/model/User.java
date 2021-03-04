@@ -29,32 +29,30 @@ public class User implements UserDetails {
   @GeneratedValue
   private long id;
   private String name;
+
   @NotNull
   //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   @Email
   @Column(unique = true)
   private String email;
+
   @NotNull
   @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
   @Column(unique = true)
   private String username;
+
   @NotNull
   @Size(max = 1024)
   private String password;
+
   @NotNull
   private OffsetDateTime registrationTime;
-
   private OffsetDateTime lastLoginTime;
-
-
-
-  public User setId(long id) {
-    this.id = id;
-    return this;
-  }
-
+  
   @ManyToMany
   private Set<User> followers; //юзери които go следваt
+  private boolean following;
+  private boolean admin;
 
 
   public long getId() {
@@ -120,8 +118,26 @@ public class User implements UserDetails {
     return this;
   }
 
+  public boolean isFollowing() {
+    return following;
+  }
 
- /* public Set<User> getFollowers() {
+  public User setFollowing(boolean following) {
+    this.following = following;
+    return this;
+  }
+
+//  public ArrayList<User> getUsers() {
+//    return users;
+//  }
+//
+//  public User setUsers(ArrayList<User> users) {
+//    this.users = users;
+//    return this;
+//  }
+
+
+ public Set<User> getFollowers() {
     return followers;
   }
 
@@ -129,7 +145,7 @@ public class User implements UserDetails {
     this.followers = followers;
     return this;
   }
-*/
+
   @Override
   public boolean isAccountNonExpired() {
     return true;
