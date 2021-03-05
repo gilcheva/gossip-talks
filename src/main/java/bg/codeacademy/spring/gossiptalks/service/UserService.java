@@ -3,6 +3,10 @@ package bg.codeacademy.spring.gossiptalks.service;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +25,7 @@ public class UserService implements UserDetailsService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  @Override
+   @Override
   public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
     return userRepository.findByUsername(s);
   }

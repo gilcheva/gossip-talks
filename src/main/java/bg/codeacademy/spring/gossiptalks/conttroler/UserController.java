@@ -39,3 +39,4 @@ public class UserController {
     return userService.changePassword(userID, request.getOldPassword(), request.getNewPassword());
   }
 }
+
