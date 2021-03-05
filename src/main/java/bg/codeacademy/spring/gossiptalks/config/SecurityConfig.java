@@ -1,6 +1,7 @@
 package bg.codeacademy.spring.gossiptalks.config;
 
-import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
+
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http. csrf()
+    http.csrf()
         /**/.disable()
         .cors()
         /**/.disable()
@@ -31,13 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .logout()
         /**/.and()
         .authorizeRequests()
+        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
         /**/.antMatchers("/h2-console/**").permitAll()
-        /**/.antMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
+        /**/.antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
         /**/.antMatchers("/**").permitAll();//????
     // /**/.antMatchers("/**").authenticated();
 
-    //requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
-
+    //
 
   }
 

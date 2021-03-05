@@ -24,7 +24,6 @@ public class Gossip {
   @NotNull
   private OffsetDateTime dateTime;
 
-
   public String getText() {
     return text;
   }

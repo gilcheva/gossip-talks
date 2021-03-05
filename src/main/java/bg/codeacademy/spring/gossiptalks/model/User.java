@@ -1,19 +1,15 @@
 package bg.codeacademy.spring.gossiptalks.model;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -29,31 +25,29 @@ public class User implements UserDetails {
   @GeneratedValue
   private long id;
   private String name;
-
   @NotNull
-  //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   @Email
   @Column(unique = true)
   private String email;
-
   @NotNull
   @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
   @Column(unique = true)
   private String username;
-
   @NotNull
   @Size(max = 1024)
   private String password;
-
   @NotNull
   private OffsetDateTime registrationTime;
-  private OffsetDateTime lastLoginTime;
-  
-  @ManyToMany
-  private Set<User> followers; //юзери които go следваt
-  private boolean following;
-  private boolean admin;
 
+  private OffsetDateTime lastLoginTime;
+
+  @ManyToMany
+  private Set<User> followers; //юзери които го следват
+
+  public User setId(long id) {
+    this.id = id;
+    return this;
+  }
 
   public long getId() {
     return id;
@@ -118,26 +112,7 @@ public class User implements UserDetails {
     return this;
   }
 
-  public boolean isFollowing() {
-    return following;
-  }
-
-  public User setFollowing(boolean following) {
-    this.following = following;
-    return this;
-  }
-
-//  public ArrayList<User> getUsers() {
-//    return users;
-//  }
-//
-//  public User setUsers(ArrayList<User> users) {
-//    this.users = users;
-//    return this;
-//  }
-
-
- public Set<User> getFollowers() {
+  public Set<User> getFollowers() {
     return followers;
   }
 
