@@ -11,10 +11,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   User findByUsername(String username);
-
-
   List<User> findAll();
-
   Optional<User> findByFollowersIn(Set<User> followers);
 
 }

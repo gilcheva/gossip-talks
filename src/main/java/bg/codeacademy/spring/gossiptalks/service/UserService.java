@@ -62,4 +62,22 @@ public class UserService implements UserDetailsService {
     user.setPassword(passwordEncoder.encode(newPassword));
     return userRepository.save(user);
   }
+
+  public User followUser(User currentUser, String username, boolean follow) {
+    // make sure if the user exist
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new UsernameNotFoundException("The user not found");
+    }
+    if (follow) {
+      //add User to Followers
+      currentUser.getFollowers().add(user);
+
+    } else {
+      //remove from Followers
+      currentUser.getFollowers().remove(user);
+    }
+    return userRepository.save(currentUser);
+
+  }
 }
