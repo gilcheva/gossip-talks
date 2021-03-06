@@ -24,14 +24,17 @@ public class UserService implements UserDetailsService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  @Override
-  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    return userRepository.findByUsername(s);
+   @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUsername(username);
   }
 
-  public User register(String userName, String userPassword, String passConfirmation,
+  public User register(String userName,
+      String userPassword,
+      String passConfirmation,
       String userEmail,
-      String name, boolean folowing) {
+      String name,
+      boolean following) {
     if (!userPassword.equals(passConfirmation)) {
       throw new IllegalArgumentException("The password doesn't match");
     }
