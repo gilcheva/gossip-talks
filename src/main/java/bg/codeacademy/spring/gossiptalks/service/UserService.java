@@ -3,10 +3,6 @@ package bg.codeacademy.spring.gossiptalks.service;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,13 +22,16 @@ public class UserService implements UserDetailsService {
   }
 
    @Override
-  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    return userRepository.findByUsername(s);
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUsername(username);
   }
 
-  public User register(String userName, String userPassword, String passConfirmation,
+  public User register(String userName,
+      String userPassword,
+      String passConfirmation,
       String userEmail,
-      String name, boolean folowing) {
+      String name,
+      boolean following) {
     if (!userPassword.equals(passConfirmation)) {
       throw new IllegalArgumentException("The password doesn't match");
     }
