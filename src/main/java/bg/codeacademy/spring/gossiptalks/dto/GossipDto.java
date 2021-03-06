@@ -27,7 +27,6 @@ public class GossipDto {
     this.text = text;
     return this;
   }
-
   public String getUsername() {
     return username;
   }

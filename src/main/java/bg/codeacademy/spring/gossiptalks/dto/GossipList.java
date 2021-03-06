@@ -19,7 +19,9 @@ public class GossipList {
   @NotNull
   private int total;
 
+
   private ArrayList<Gossip> content;
+
 
   public int getPageNumber() {
     return pageNumber;

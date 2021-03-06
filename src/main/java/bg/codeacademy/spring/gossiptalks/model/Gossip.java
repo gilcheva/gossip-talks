@@ -23,11 +23,9 @@ public class Gossip {
   private String username;
   @NotNull
   private OffsetDateTime dateTime;
-
   public String getText() {
     return text;
   }
-
   public Gossip setText(String text) {
     this.text = text;
     return this;

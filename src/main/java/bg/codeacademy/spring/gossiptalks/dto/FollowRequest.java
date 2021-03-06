@@ -6,7 +6,6 @@ public class FollowRequest {
 
   @NotNull
   private boolean follow;
-
   public boolean isFollow() {
     return follow;
   }

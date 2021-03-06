@@ -3,6 +3,9 @@ package bg.codeacademy.spring.gossiptalks.service;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -83,4 +86,40 @@ public class UserService implements UserDetailsService {
     return userRepository.save(currentUser);
 
   }
+
+  public List<User> getUsers(String name, boolean follow) {
+    List<User> userList = new ArrayList<User>();
+    if (follow == false) {
+      if (name == null) {
+        userList = userRepository.findAll();
+      } else {
+        User user = userRepository.findByUsername(name);
+        if (user == null) {
+          user = userRepository.findByName(name);
+        }
+        userList.add(user);
+      }
+    } else {
+      if (name == null) {
+        userList = userRepository.findByFollowersIn(userRepository.findAll());
+
+      } else {
+        userList.add(userRepository.findByName(name));
+        userList = (userRepository.findByFollowersIn(userList));
+      }
+    }
+    return userList;
+  }
+   public User getCurrentUser(){
+     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+     String username;
+     if (principal instanceof UserDetails) {
+        username = ((UserDetails)principal).getUsername();
+     } else {
+        username = principal.toString();
+     }
+     return userRepository.findByUsername(username);
+  }
+
+
 }
