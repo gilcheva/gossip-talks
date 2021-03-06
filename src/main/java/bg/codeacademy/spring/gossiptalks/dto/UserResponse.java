@@ -15,7 +15,6 @@ public class UserResponse {
     this.email = email;
     return this;
   }
-
   public String getUsername() {
     return username;
   }

@@ -62,7 +62,6 @@ public class CreateUserRequest {
     this.name = name;
     return this;
   }
-
   public boolean isFollowing() {
     return following;
   }

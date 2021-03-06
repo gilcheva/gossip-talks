@@ -18,8 +18,6 @@ import javax.validation.Payload;
 public @interface ValidPassword {
 
   String message() default "This is an invalid password.";
-
   Class<?>[] groups() default {};
-
   Class<? extends Payload>[] payload() default {};
 }

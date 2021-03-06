@@ -14,7 +14,6 @@ public class CreateGossipRequest {
   public String getText() {
     return text;
   }
-
   public CreateGossipRequest setText(String text) {
     this.text = text;
     return this;

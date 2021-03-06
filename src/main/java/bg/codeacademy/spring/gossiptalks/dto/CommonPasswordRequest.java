@@ -8,6 +8,7 @@ public class CommonPasswordRequest {
   @NotNull
   @ValidPassword
   private String password;
+
   @NotNull
   @ValidPassword
   private String passwordConfirmation;

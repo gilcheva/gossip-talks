@@ -9,7 +9,6 @@ public class GossipList {
   private int count;
   private int total;
   private ArrayList<String> content;
-
   public int getPageNumber() {
     return pageNumber;
   }

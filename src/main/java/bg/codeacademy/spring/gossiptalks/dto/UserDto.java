@@ -66,7 +66,6 @@ public class UserDto {
     this.registrationTime = registrationTime;
     return this;
   }
-
   public OffsetDateTime getLastLoginTime() {
     return lastLoginTime;
   }
