@@ -94,6 +94,10 @@ public class UserService implements UserDetailsService {
 
   }
 
+  public List<User> getUsers() {
+    return getUsers("", false);
+  }
+
   public List<User> getUsers(String name, boolean f) {
     List<User> userList = new ArrayList<>();
     int pageNumber = 0;
@@ -117,12 +121,11 @@ public class UserService implements UserDetailsService {
         .sorted((User u1, User u2) ->
             (gossipRepository.findByUsername(u1.getUsername())).size() <
                 (gossipRepository.findByUsername(u2.getUsername())).size() ?
-                1 : -1)
+                -1 : 1)
         .skip(pageNumber * pageSize)
         .limit(pageSize)
         .collect(Collectors.toList());
   }
-
 
   public User getCurrentUser() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
