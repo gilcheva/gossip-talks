@@ -1,13 +1,17 @@
 package bg.codeacademy.spring.gossiptalks.conttroler;
 
-import bg.codeacademy.spring.gossiptalks.dto.ChangePasswordRequest;
+
+import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.service.UserService;
+import io.swagger.annotations.ApiParam;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,17 +38,32 @@ public class UserController {
         name, false);
   }
 
-  /*@PostMapping("/{userID}")
-  public User updatePassword(@PathVariable("userID") int userID,
-      @RequestBody ChangePasswordRequest request) {
-    return userService.changePassword(userID, request.getOldPassword(), request.getNewPassword());
+
+  @GetMapping
+  List<User> getUsers(
+      @RequestParam (value ="name", required = false) String name, @RequestParam(value ="f", required = false) boolean f){
+
+      return null;
+
   }
-  */
-  @PostMapping(consumes = {"multipart/form-data"}, path={"me/{userID}"})
-  public User updatePassword(@RequestPart(value = "userID") long userID,
-      @RequestPart(value = "password", required = true) String oldPassword,
-      @RequestPart(value = "password", required = true) String newPassword) {
-    return userService.changePassword(userID, oldPassword, newPassword);
+
+  @PostMapping(consumes = {"multipart/form-data"}, value={"/{username}/follow"})
+  String followUser(
+      @ApiParam(value = "" ,required = true) @PathVariable ("username") String username,
+      @ApiParam(value = "" ,required = true )@RequestParam("follow") boolean follow
+  ){
+    User currentUser = userService.getCurrentUser();
+    userService.followUser(currentUser,username,follow);
+    return "OK";
+  }
+
+  @PostMapping(consumes = {"multipart/form-data"}, value={"/me"})
+
+  public UserResponse changeCurrentUserPassword(
+      @RequestPart(value = "password", required = true) String password,
+      @RequestPart(value = "passwordConfirmation", required = true) String passwordConfirmation,
+      @RequestPart(value = "oldPassword", required = true) String oldPassword) {
+      return userService.changePassword(password,passwordConfirmation,oldPassword);
   }
 
   @GetMapping("/me")

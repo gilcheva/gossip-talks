@@ -1,5 +1,6 @@
 package bg.codeacademy.spring.gossiptalks.service;
 
+import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
@@ -48,22 +49,26 @@ public class UserService implements UserDetailsService {
     return userRepository.save(user);
   }
 
-  public User changePassword(long userID, String oldPassword, String newPassword) {
-    return changePassword(userRepository.getOne(userID), oldPassword, newPassword);
-  }
 
-  public User changePassword(User user, String oldPassword, String newPassword) {
-    //validate old password
-    String currentPassHash = user.getPassword();
-    if (!passwordEncoder.matches(oldPassword, currentPassHash)) {
+  public UserResponse changePassword(String newPassword, String passwordConfirmation, String  oldPassword) {
+
+    if (!passwordConfirmation.equals(newPassword))
       throw new IllegalArgumentException("The password doesn't match");
-    }
-    if (passwordEncoder.matches(newPassword, currentPassHash)) {
+    if (newPassword.equals(oldPassword)) {
       throw new IllegalArgumentException("The passwords are the same");
     }
     //set new password and save
+    User user = getCurrentUser();
+    if(user==null){
+      throw new UsernameNotFoundException("The user have to loggin");
+    }
     user.setPassword(passwordEncoder.encode(newPassword));
-    return userRepository.save(user);
+    userRepository.save(user);
+    UserResponse userResponse = new UserResponse();
+    userResponse.setName(user.getName());
+    userResponse.setUsername(user.getUsername());
+    userResponse.setEmail(user.getEmail());
+    return userResponse;
   }
 
   public User followUser(User currentUser, String username, boolean follow) {
