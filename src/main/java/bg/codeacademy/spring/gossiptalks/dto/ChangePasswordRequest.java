@@ -13,6 +13,10 @@ public class ChangePasswordRequest {
   @ValidPassword
   private String newPassword;
 
+  @NotNull
+  @ValidPassword
+  private String newPasswordConfirmation;
+
   public String getOldPassword() {
     return oldPassword;
   }
@@ -28,6 +32,15 @@ public class ChangePasswordRequest {
 
   public ChangePasswordRequest setNewPassword(String newPassword) {
     this.newPassword = newPassword;
+    return this;
+  }
+
+  public String getNewPasswordConfirmation() {
+    return newPasswordConfirmation;
+  }
+
+  public ChangePasswordRequest setNewPasswordConfirmation(String newPasswordConfirmation) {
+    this.newPasswordConfirmation = newPasswordConfirmation;
     return this;
   }
 }

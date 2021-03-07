@@ -7,6 +7,14 @@ import bg.codeacademy.spring.gossiptalks.service.UserService;
 import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
 import java.util.List;
+import com.sun.istack.NotNull;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,15 +46,7 @@ public class UserController {
         name, false);
   }
 
-
-  @GetMapping
-  List<User> getUsers(
-      @RequestParam (value ="name", required = false) String name, @RequestParam(value ="f", required = false) boolean f){
-
-      return null;
-
-  }
-
+  
   @PostMapping(consumes = {"multipart/form-data"}, value={"/{username}/follow"})
   String followUser(
       @ApiParam(value = "" ,required = true) @PathVariable ("username") String username,
@@ -57,6 +57,7 @@ public class UserController {
     return "OK";
   }
 
+
   @PostMapping(consumes = {"multipart/form-data"}, value={"/me"})
 
   public UserResponse changeCurrentUserPassword(
@@ -64,10 +65,34 @@ public class UserController {
       @RequestPart(value = "passwordConfirmation", required = true) String passwordConfirmation,
       @RequestPart(value = "oldPassword", required = true) String oldPassword) {
       return userService.changePassword(password,passwordConfirmation,oldPassword);
-  }
+
+  
 
   @GetMapping("/me")
   public User currentUser() {
     return userService.getCurrentUser();
   }
+
+
+  @GetMapping
+  public UserResponse[] getUsers(
+      @NotNull @RequestParam( (value ="name" required = false) String name,
+      @RequestParam(name = "f", required = false, defaultValue = "false") boolean f) {
+
+    List<User> users;
+    if (name == null) {
+      users = userService.getUsers();
+    } else {
+      users = userService.getUsers(name, f);
+    }
+    Stream<User> streamedUsers = users.stream();
+
+    return streamedUsers.map(user -> new UserResponse()
+        .setId(user.getId())
+        .setEmail(user.getEmail())
+        .setUsername(user.getUsername())
+        .setName(user.getName())
+    ).toArray(UserResponse[]::new);
+  }
 }
+
