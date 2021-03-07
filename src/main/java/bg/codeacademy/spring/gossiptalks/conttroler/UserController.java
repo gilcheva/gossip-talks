@@ -4,6 +4,7 @@ package bg.codeacademy.spring.gossiptalks.conttroler;
 import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.service.UserService;
+import com.sun.istack.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class UserController {
     return userService.changePassword(userID, request.getOldPassword(), request.getNewPassword());
   }
   */
-  @PostMapping(consumes = {"multipart/form-data"}, path={"me/{userID}"})
+  @PostMapping(consumes = {"multipart/form-data"}, path = {"me/{userID}"})
   public User updatePassword(@PathVariable(value = "userID") long userID,
       @RequestPart(value = "password", required = true) String oldPassword,
       @RequestPart(value = "password", required = true) String newPassword) {
@@ -63,10 +64,15 @@ public class UserController {
 
   @GetMapping
   public UserResponse[] getUsers(
-      @RequestParam(required = false) String name,
+      @NotNull @RequestParam(required = false) String name,
       @RequestParam(name = "onlyFollowed", required = false, defaultValue = "false") boolean f) {
 
-    List<User> users = userService.getUsers(name,f);
+    List<User> users;
+    if (name == null) {
+      users = userService.getUsers();
+    } else {
+      users = userService.getUsers(name, f);
+    }
     Stream<User> streamedUsers = users.stream();
 
     return streamedUsers.map(user -> new UserResponse()
