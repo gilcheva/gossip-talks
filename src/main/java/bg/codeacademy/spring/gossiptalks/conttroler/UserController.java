@@ -64,9 +64,11 @@ public class UserController {
       @RequestPart(value = "password", required = true) String password,
       @RequestPart(value = "passwordConfirmation", required = true) String passwordConfirmation,
       @RequestPart(value = "oldPassword", required = true) String oldPassword) {
-      return userService.changePassword(password,passwordConfirmation,oldPassword);
+    return userService.changePassword(password, passwordConfirmation, oldPassword);
 
-  
+
+
+  }
 
   @GetMapping("/me")
   public User currentUser() {
@@ -75,8 +77,7 @@ public class UserController {
 
 
   @GetMapping
-  public UserResponse[] getUsers(
-      @NotNull @RequestParam( (value ="name" required = false) String name,
+  public UserResponse[] getUsers(@NotNull @RequestParam(value ="name", required = false) String name,
       @RequestParam(name = "f", required = false, defaultValue = "false") boolean f) {
 
     List<User> users;
