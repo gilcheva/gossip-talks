@@ -18,6 +18,7 @@ public class ChangePasswordRequest {
   private String newPasswordConfirmation;
 
   public String getOldPassword() {
+
     return oldPassword;
   }
 
@@ -36,6 +37,7 @@ public class ChangePasswordRequest {
   }
 
   public String getNewPasswordConfirmation() {
+
     return newPasswordConfirmation;
   }
 
