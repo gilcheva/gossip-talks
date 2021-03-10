@@ -1,5 +1,6 @@
 package bg.codeacademy.spring.gossiptalks.service;
 
+
 import bg.codeacademy.spring.gossiptalks.dto.GossipList;
 import bg.codeacademy.spring.gossiptalks.model.Gossip;
 import bg.codeacademy.spring.gossiptalks.model.User;
@@ -12,6 +13,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+
 
 
 @Service
@@ -22,6 +27,7 @@ public class GossipService {
   public GossipService(GossipRepository gossipRepository) {
     this.gossipRepository = gossipRepository;
   }
+
   public GossipList getGossips(Integer pageNo, Integer pageSize, User user) {
     Set<User> friendList = user.getFollowers();
     GossipList gossips = new GossipList();
@@ -71,6 +77,12 @@ public class GossipService {
     return gossipList.get(index-1);
 
 
+  }
+
+
+
+  public Page<Gossip> listGossips(Pageable pageable) {
+      return gossipRepository.findAll(pageable);
   }
 
 }

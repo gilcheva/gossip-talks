@@ -10,4 +10,5 @@ public interface GossipRepository extends JpaRepository<Gossip, Long> {
   List<Gossip> findByAuthor_Username(String username);
   List<Gossip> findByAuthor_Id(long Id);
 
+  List<Gossip> findByUsername (String username);
 }

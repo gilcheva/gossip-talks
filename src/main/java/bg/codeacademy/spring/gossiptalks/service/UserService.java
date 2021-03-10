@@ -8,6 +8,7 @@ import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -36,13 +37,16 @@ public class UserService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    return userRepository.findByUsername(s);
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByUsername(username);
   }
 
-  public User register(String userName, String userPassword, String passConfirmation,
+  public User register(String userName,
+      String userPassword,
+      String passConfirmation,
       String userEmail,
-      String name, boolean folowing) {
+      String name,
+      boolean following) {
     if (!userPassword.equals(passConfirmation)) {
       throw new IllegalArgumentException("The password doesn't match");
     }
@@ -95,9 +99,17 @@ public class UserService implements UserDetailsService {
     }
        return userRepository.save(currentUser);
   }
+
   public List<User> getUsers() {
     return getUsers("", false);
   }
+
+
+  public List<User> getUsers() {
+    return getUsers("", false);
+  }
+
+
   public List<User> getUsers(String name, boolean f) {
     List<User> userList = new ArrayList<>();
     int pageNumber = 0;
@@ -117,6 +129,7 @@ public class UserService implements UserDetailsService {
       }
     }
 
+
     return userList.stream()
         .distinct()
         .sorted((User u1, User u2) ->
@@ -129,8 +142,8 @@ public class UserService implements UserDetailsService {
   }
 
 
+
   public User getCurrentUser() {
-    //Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String username = authentication.getName();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -162,6 +175,8 @@ public class UserService implements UserDetailsService {
     gossip.setTotal(total);
     gossip.setCount(count);
     return gossip;
+
+
   }
 
 

@@ -1,16 +1,14 @@
 package bg.codeacademy.spring.gossiptalks.conttroler;
 
 
+
 import bg.codeacademy.spring.gossiptalks.dto.GossipList;
 import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.service.UserService;
 import io.swagger.annotations.ApiParam;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
-import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -121,3 +119,6 @@ public class UserController {
 
   }
 }
+
+
+
