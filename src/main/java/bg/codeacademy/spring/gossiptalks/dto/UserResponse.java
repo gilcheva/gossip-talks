@@ -1,30 +1,21 @@
 package bg.codeacademy.spring.gossiptalks.dto;
 
-import javax.validation.constraints.NotBlank;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class UserResponse {
 
-  private long id;
-
-  @NotBlank
+  @NotNull
+  @Email
   private String email;
-
-  @NotBlank
+  @NotNull
   @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
   private String username;
-
   private String name;
   private boolean following;
 
-  public long getId() {
-    return id;
-  }
-
-  public UserResponse setId(long id) {
-    this.id = id;
-    return this;
-  }
 
   public String getEmail() {
     return email;

@@ -4,7 +4,6 @@ import java.time.OffsetDateTime;
 
 public class UserDto {
 
-  private int Id;
   private String name;
   private String email;
   private String username;
@@ -13,14 +12,7 @@ public class UserDto {
   private OffsetDateTime lastLoginTime;
   private boolean following;
 
-  public int getId() {
-    return Id;
-  }
 
-  public UserDto setId(int id) {
-    Id = id;
-    return this;
-  }
 
   public String getName() {
     return name;

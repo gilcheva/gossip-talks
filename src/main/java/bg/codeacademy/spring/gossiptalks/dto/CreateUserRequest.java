@@ -5,38 +5,24 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-//extends CommonPasswordRequest - може ли да се екстендва тук
+
 public class CreateUserRequest {
 
-  @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
-  private String username;
 
+  @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
+  @NotNull
+  private String username;
   @NotNull
   @ValidPassword
   private String password;
-
   @NotNull
   @ValidPassword
   private String passwordConfirmation;
-
   private String name;
-
   @NotNull
   @Email
-  //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   private String email;
   private boolean following;
-  // optional, should be ignored
-
-
-  public String getPasswordConfirmation() {
-    return passwordConfirmation;
-  }
-
-  public CreateUserRequest setPasswordConfirmation(String passwordConfirmation) {
-    this.passwordConfirmation = passwordConfirmation;
-    return this;
-  }
 
   public String getUsername() {
     return username;
@@ -56,6 +42,15 @@ public class CreateUserRequest {
     return this;
   }
 
+  public String getPasswordConfirmation() {
+    return passwordConfirmation;
+  }
+
+  public CreateUserRequest setPasswordConfirmation(String passwordConfirmation) {
+    this.passwordConfirmation = passwordConfirmation;
+    return this;
+  }
+
   public String getName() {
     return name;
   }
@@ -63,9 +58,6 @@ public class CreateUserRequest {
   public CreateUserRequest setName(String name) {
     this.name = name;
     return this;
-  }
-  public boolean isFollowing() {
-    return following;
   }
 
   public String getEmail() {
@@ -77,10 +69,13 @@ public class CreateUserRequest {
     return this;
   }
 
+  public boolean isFollowing() {
+    return following;
+  }
+
   public CreateUserRequest setFollowing(boolean following) {
     this.following = following;
     return this;
   }
 
 }
-
