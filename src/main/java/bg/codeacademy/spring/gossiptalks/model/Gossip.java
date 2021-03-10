@@ -1,51 +1,37 @@
 package bg.codeacademy.spring.gossiptalks.model;
 
+import bg.codeacademy.spring.gossiptalks.validation.ValidText;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 
 @Entity
 public class Gossip {
 
+
   @Id
-  @Pattern(regexp = "[A-Z0-9]+")
-  private String id;
+  @GeneratedValue
+  private long id;
   @NotNull
   @Size(min = 2, max = 255)
-  @Pattern(regexp = "<[^a-zA-Z\\/][^>]*>")
+  @ValidText
   private String text;
   @NotNull
-  private String username;
-  @NotNull
   private OffsetDateTime dateTime;
-  public String getText() {
-    return text;
-  }
-  public Gossip setText(String text) {
-    this.text = text;
-    return this;
-  }
+  @ManyToOne
+  private User author;
 
-  public String getUsername() {
-    return username;
-  }
-
-  public Gossip setUsername(String username) {
-    this.username = username;
-    return this;
-  }
-
-  public String getId() {
+  public long getId() {
     return id;
   }
 
 
-  public Gossip setId(String id) {
+  public Gossip setId(long id) {
     this.id = id;
     return this;
   }
@@ -59,6 +45,24 @@ public class Gossip {
     return this;
   }
 
+  public String getText() {
+    return text;
+  }
+
+  public Gossip setText(String text) {
+    this.text = text;
+    return this;
+  }
+
+  public User getAuthor() {
+    return author;
+  }
+
+  public Gossip setAuthor(User author) {
+    this.author = author;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -69,13 +73,12 @@ public class Gossip {
     }
     Gossip gossip = (Gossip) o;
     return id == gossip.id &&
-        username.equals(gossip.username) &&
         text.equals(gossip.text) &&
         dateTime.equals(gossip.dateTime);
   }
 
   @Override
   public int hashCode() {//TODO
-    return Objects.hash(text, username, id, dateTime);
+    return Objects.hash(text, id, dateTime);
   }
 }

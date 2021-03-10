@@ -1,11 +1,20 @@
 package bg.codeacademy.spring.gossiptalks.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class GossipDto {
 
   private String text;
+  @Pattern(regexp = "^[a-z0-8\\.\\-]+$")
+  @NotNull
   private String username;
+  @Pattern(regexp = "[A-Z0-9]+")
+  @NotNull
   private String id;
+  @NotNull
   private String dateTime;
+
 
   public String getText() {
     return text;

@@ -10,8 +10,9 @@ public class FollowRequest {
     return follow;
   }
 
-  public FollowRequest setFollow(boolean follow) {
+  public FollowRequest(boolean follow) {
     this.follow = follow;
-    return this;
   }
+
+
 }

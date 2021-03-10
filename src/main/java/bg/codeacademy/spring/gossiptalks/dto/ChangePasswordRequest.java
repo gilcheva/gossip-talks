@@ -8,10 +8,10 @@ public class ChangePasswordRequest {
   @NotNull
   @ValidPassword
   private String oldPassword;
-
   @NotNull
   @ValidPassword
   private String newPassword;
+
 
   public String getOldPassword() {
     return oldPassword;

@@ -21,20 +21,8 @@ public class CreateUserRequest {
   private String name;
   @NotNull
   @Email
-  //@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
   private String email;
   private boolean following;
-
-
-
-  public String getPasswordConfirmation() {
-    return passwordConfirmation;
-  }
-
-  public CreateUserRequest setPasswordConfirmation(String passwordConfirmation) {
-    this.passwordConfirmation = passwordConfirmation;
-    return this;
-  }
 
   public String getUsername() {
     return username;
@@ -54,6 +42,15 @@ public class CreateUserRequest {
     return this;
   }
 
+  public String getPasswordConfirmation() {
+    return passwordConfirmation;
+  }
+
+  public CreateUserRequest setPasswordConfirmation(String passwordConfirmation) {
+    this.passwordConfirmation = passwordConfirmation;
+    return this;
+  }
+
   public String getName() {
     return name;
   }
@@ -61,9 +58,6 @@ public class CreateUserRequest {
   public CreateUserRequest setName(String name) {
     this.name = name;
     return this;
-  }
-  public boolean isFollowing() {
-    return following;
   }
 
   public String getEmail() {
@@ -73,6 +67,10 @@ public class CreateUserRequest {
   public CreateUserRequest setEmail(String email) {
     this.email = email;
     return this;
+  }
+
+  public boolean isFollowing() {
+    return following;
   }
 
   public CreateUserRequest setFollowing(boolean following) {
