@@ -28,12 +28,11 @@ spring:
     username: "${JDBC_DATABASE_USERNAME}"
     password: "${JDBC_DATABASE_PASSWORD}"
 
+
   jpa:
     show-sql=true:spring.h2.console.enabled: false
     spring:
       jpa:
         properties:
           hibernate:
-            format_sql=true:
-
-
+            format_sql: true

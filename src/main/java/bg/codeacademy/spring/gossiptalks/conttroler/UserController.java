@@ -1,8 +1,5 @@
 package bg.codeacademy.spring.gossiptalks.conttroler;
 
-
-
-
 import bg.codeacademy.spring.gossiptalks.dto.GossipList;
 import bg.codeacademy.spring.gossiptalks.dto.UserDto;
 import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
@@ -55,15 +52,10 @@ public class UserController {
 
   @GetMapping
   public UserResponse[] getUsers(
-      @NotNull @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "name", required = false) String name,
       @RequestParam(name = "f", required = false, defaultValue = "false") boolean f) {
 
-    List<User> users;
-    if (name == null) {
-      users = userService.getUsers();
-    } else {
-      users = userService.getUsers(name, f);
-    }
+    List<User> users = userService.getUsers(name, f);
     Stream<User> streamedUsers = users.stream();
 
     return streamedUsers.map(user -> new UserResponse()
@@ -87,13 +79,11 @@ public class UserController {
   }
 
   @PostMapping(consumes = {"multipart/form-data"}, value = {"/me"})
-
   public UserResponse changeCurrentUserPassword(
       @RequestPart(value = "password", required = true) String password,
       @RequestPart(value = "passwordConfirmation", required = true) String passwordConfirmation,
       @RequestPart(value = "oldPassword", required = true) String oldPassword) {
-    User currentUser = userService.getCurrentUser();
-    currentUser = userService.changePassword(password, passwordConfirmation, oldPassword);
+    User currentUser = userService.changePassword(password, passwordConfirmation, oldPassword);
     return toDTO(currentUser);
 
   }
