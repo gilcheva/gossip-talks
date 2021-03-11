@@ -16,7 +16,7 @@ public class Gossip {
 
   @Id
   @GeneratedValue
-  private long id;
+  private Long id;
   @NotNull
   @Size(min = 2, max = 255)
   @ValidText
@@ -26,12 +26,12 @@ public class Gossip {
   @ManyToOne
   private User author;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
 
-  public Gossip setId(long id) {
+  public Gossip setId(Long id) {
     this.id = id;
     return this;
   }
