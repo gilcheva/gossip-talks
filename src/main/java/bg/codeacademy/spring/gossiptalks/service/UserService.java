@@ -1,5 +1,6 @@
 package bg.codeacademy.spring.gossiptalks.service;
 
+
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.GossipRepository;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;

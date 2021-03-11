@@ -1,6 +1,8 @@
 package bg.codeacademy.spring.gossiptalks.conttroler;
 
 
+
+
 import bg.codeacademy.spring.gossiptalks.dto.GossipList;
 import bg.codeacademy.spring.gossiptalks.dto.UserDto;
 import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
@@ -138,3 +140,5 @@ public class UserController {
 
   }
 }
+
+
