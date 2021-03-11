@@ -2,16 +2,19 @@ package bg.codeacademy.spring.gossiptalks.conttroler;
 
 
 import bg.codeacademy.spring.gossiptalks.dto.GossipList;
+import bg.codeacademy.spring.gossiptalks.dto.UserDto;
 import bg.codeacademy.spring.gossiptalks.dto.UserResponse;
+import bg.codeacademy.spring.gossiptalks.model.Gossip;
 import bg.codeacademy.spring.gossiptalks.model.User;
+import bg.codeacademy.spring.gossiptalks.service.GossipService;
 import bg.codeacademy.spring.gossiptalks.service.UserService;
 import io.swagger.annotations.ApiParam;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
-import javax.persistence.ManyToMany;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,21 +29,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private UserService userService;
+  private final GossipService gossipService;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService,
+      GossipService gossipService) {
     this.userService = userService;
+    this.gossipService = gossipService;
   }
 
   @PostMapping(consumes = {"multipart/form-data"})
-  public void createUser(
+  public UserDto createUser(
       @RequestPart(value = "password", required = true) String password,
       @RequestPart(value = "passwordConfirmation", required = true) String passwordConfirmation,
       @RequestPart(value = "email", required = true) String email,
       @RequestPart(value = "username", required = true) String username,
       @RequestPart(value = "name", required = false) String name) {
-    userService.register(username, password,
+    User newUser = userService.register(username, password,
         passwordConfirmation, email,
         name, false);
+    return toDTOUSER(newUser);
   }
 
 
@@ -72,13 +79,8 @@ public class UserController {
   ) {
     User currentUser = userService.getCurrentUser();
     currentUser = userService.followUser(currentUser, username, follow);
-    UserResponse userResponse = new UserResponse()
-        .setEmail(currentUser.getEmail())
-        .setUsername(currentUser.getUsername())
-        .setName(currentUser.getName())
-        .setFollowing(follow);
 
-    return userResponse;
+    return toDTO(currentUser).setFollowing(follow);
 
   }
 
@@ -90,34 +92,49 @@ public class UserController {
       @RequestPart(value = "oldPassword", required = true) String oldPassword) {
     User currentUser = userService.getCurrentUser();
     currentUser = userService.changePassword(password, passwordConfirmation, oldPassword);
-    UserResponse userResponse = new UserResponse()
-        .setEmail(currentUser.getEmail())
-        .setUsername(currentUser.getUsername())
-        .setName(currentUser.getName());
+    return toDTO(currentUser);
 
-    return userResponse;
   }
 
   @GetMapping("/me")
   public UserResponse currentUser() {
     User currentUser = userService.getCurrentUser();
-    UserResponse userResponse = new UserResponse()
-        .setEmail(currentUser.getEmail())
-        .setUsername(currentUser.getUsername())
-        .setName(currentUser.getName());
-    if(!currentUser.getFollowers().isEmpty()){
-      userResponse.setFollowing(true);
-    }
-    return userResponse;
+    return toDTO(currentUser);
+
   }
 
   @GetMapping("/{username}/gossips")
   public GossipList getUserGossips(
-      @RequestParam(value = "pageNo", required = false) Integer pageNo,
-      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+      @Min(0) @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+      @Min(0) @Max(50) @RequestParam(value = "pageSize", required = false, defaultValue = "0") Integer pageSize,
       @PathVariable(value = "username", required = true) String username
   ) {
-    return userService.getUserGossips(pageNo, pageSize, username);
+    Page<Gossip> gossips = gossipService.getGossipsByAuthor(pageNo, pageSize, username);
+    return GossipController.toDTO(gossips);
+  }
+
+  static UserResponse toDTO(User user) {
+
+    return new UserResponse()
+        .setEmail(user.getEmail())
+        .setName(user.getName())
+        .setFollowing(false)
+        .setUsername(user.getUsername()
+        );
+
+  }
+
+  static UserDto toDTOUSER(User user) {
+    return new UserDto()
+        .setEmail(user.getEmail())
+        .setFollowing(false)
+        .setName(user.getName())
+        .setUsername(user.getUsername())
+        .setPassword(user.getPassword())
+        .setLastLoginTime(user.getLastLoginTime())
+        .setRegistrationTime(user.getRegistrationTime()
+        );
+
 
   }
 }

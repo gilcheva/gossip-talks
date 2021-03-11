@@ -1,13 +1,12 @@
 package bg.codeacademy.spring.gossiptalks.dto;
 
-import bg.codeacademy.spring.gossiptalks.model.Gossip;
 import com.sun.istack.NotNull;
-import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.Min;
 
 public class GossipList {
 
-  @Min(value=0)
+  @Min(value = 0)
   @NotNull
   private int pageNumber;
   @NotNull
@@ -16,8 +15,7 @@ public class GossipList {
   private int count;
   @NotNull
   private int total;
-  private ArrayList<Gossip> content;
-
+  private List<GossipDto> content;
 
 
   public int getPageNumber() {
@@ -56,11 +54,11 @@ public class GossipList {
     return this;
   }
 
-  public ArrayList<Gossip> getContent() {
+  public List<GossipDto> getContent() {
     return content;
   }
 
-  public GossipList setContent(ArrayList<Gossip> content) {
+  public GossipList setContent(List<GossipDto> content) {
     this.content = content;
     return this;
   }

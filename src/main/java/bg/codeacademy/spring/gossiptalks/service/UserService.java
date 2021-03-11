@@ -1,12 +1,9 @@
 package bg.codeacademy.spring.gossiptalks.service;
 
-import bg.codeacademy.spring.gossiptalks.dto.GossipList;
-import bg.codeacademy.spring.gossiptalks.model.Gossip;
 import bg.codeacademy.spring.gossiptalks.model.User;
 import bg.codeacademy.spring.gossiptalks.repository.GossipRepository;
 import bg.codeacademy.spring.gossiptalks.repository.UserRepository;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,14 +46,15 @@ public class UserService implements UserDetailsService {
     if (userRepository.findByUsername(userName) != null) {
       throw new IllegalArgumentException("The username already exist");
     }
-    User user = new User();
-    user.setUsername(userName);
-    user.setPassword(passwordEncoder.encode(userPassword));
-    user.setRegistrationTime(OffsetDateTime.now());
-    user.setLastLoginTime(OffsetDateTime.now());
-    user.setEmail(userEmail);
-    user.setName(name);
-    return userRepository.save(user);
+
+    return userRepository.save(new User()
+        .setUsername(userName)
+        .setPassword(passwordEncoder.encode(userPassword))
+        .setRegistrationTime(OffsetDateTime.now())
+        .setLastLoginTime(OffsetDateTime.now())
+        .setEmail(userEmail)
+        .setName(name)
+    );
   }
 
 
@@ -93,11 +91,13 @@ public class UserService implements UserDetailsService {
       //remove from Followers
       currentUser.getFollowers().remove(user);
     }
-       return userRepository.save(currentUser);
+    return userRepository.save(currentUser);
   }
+
   public List<User> getUsers() {
     return getUsers("", false);
   }
+
   public List<User> getUsers(String name, boolean f) {
     List<User> userList = new ArrayList<>();
     int pageNumber = 0;
@@ -130,39 +130,12 @@ public class UserService implements UserDetailsService {
 
 
   public User getCurrentUser() {
-    //Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String username = authentication.getName();
     if (!(authentication instanceof AnonymousAuthenticationToken)) {
       username = authentication.getName();
-     }
+    }
     return userRepository.findByUsername(username);
   }
-
-  public GossipList getUserGossips(Integer pageNo, Integer pageSize, String username) {
-      List<Gossip> gossipList = new ArrayList<Gossip>();
-      long userId = userRepository.findByUsername(username).getId();
-      //gossipRepository.findByAuthor_Username(username);
-      DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-      gossipList =  gossipRepository.findByAuthor_Id(userId);
-      int total = gossipList.size();
-      gossipList = gossipList.stream()
-        .distinct()
-        .sorted((Gossip g1, Gossip g2) -> g2.getDateTime().format(fm)
-            .compareTo(g1.getDateTime().format(fm)))
-        .skip(pageNo * pageSize)
-        .limit(pageSize)
-        .collect(Collectors.toList());
-      int count = gossipList.size();
-    GossipList gossip = new GossipList();
-    gossip.setContent((ArrayList<Gossip>) gossipList);
-    gossip.setPageNumber(pageNo);
-    gossip.setPageSize(pageSize);
-    gossip.setTotal(total);
-    gossip.setCount(count);
-    return gossip;
-  }
-
 
 }
