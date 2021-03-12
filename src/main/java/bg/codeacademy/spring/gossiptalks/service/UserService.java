@@ -69,10 +69,8 @@ public class UserService implements UserDetailsService {
       throw new IllegalArgumentException("The passwords are the same");
     }
     //set new password and save
+    loggedUserProvided();
     User user = getCurrentUser();
-    if (user == null) {
-      throw new UsernameNotFoundException("The user have to loggin");
-    }
     user.setPassword(passwordEncoder.encode(newPassword));
     userRepository.save(user);
     return user;
@@ -95,19 +93,19 @@ public class UserService implements UserDetailsService {
     return userRepository.save(currentUser);
   }
 
-  public List<User> getUsers() {
-    return getUsers("", false);
-  }
 
   public List<User> getUsers(String name, boolean f) {
-    List<User> userList = new ArrayList<>();
+    loggedUserProvided();
+    List<User> userList;
     int pageNumber = 0;
     int pageSize = 20;
-    if (!f) {
-      userList = userRepository.findByUsernameContainsIgnoreCase(name);
-      userList.addAll(userRepository.findByNameContainsIgnoreCase(name));
+    if (name == null) {
+      userList = getUsers();
     } else {
-      if (name != null) {
+      if (!f) {
+        userList = userRepository.findByUsernameContainsIgnoreCase(name);
+        userList.addAll(userRepository.findByNameContainsIgnoreCase(name));
+      } else {
         User currentUser = getCurrentUser();
         userList = currentUser.getFollowers().stream()
             .filter(user -> (user.getUsername().toUpperCase().contains(name.toUpperCase())))
@@ -130,6 +128,10 @@ public class UserService implements UserDetailsService {
   }
 
 
+  public List<User> getUsers() {
+    return getUsers("", false);
+  }
+
   public User getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String username = authentication.getName();
@@ -137,6 +139,13 @@ public class UserService implements UserDetailsService {
       username = authentication.getName();
     }
     return userRepository.findByUsername(username);
+  }
+
+  private void loggedUserProvided() {
+    User currentUser1 = getCurrentUser();
+    if (currentUser1 == null) {
+      throw new UsernameNotFoundException("You have to log in first.");
+    }
   }
 
 }
