@@ -41,7 +41,7 @@ class UserServiceTest {
   }
 
 
-  private static User newUser(String email) {
+  public static User newUser(String email) {
     String name = email.split("@")[0];
     return new User().setEmail(email)
         .setUsername(name)
